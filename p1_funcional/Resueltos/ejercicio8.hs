@@ -1,4 +1,4 @@
- 
+
 
 {-
 
@@ -19,3 +19,18 @@ sumaVector (x:xs) (y:ys) = x + y : sumaVector xs ys
 --
 --sumaMat :: [[Int]] -> [[Int]] -> [[Int]]
 --sumaMat xs ys = foldr (\x acc -> x (head ys): acc) [[]] xs
+
+-- Si a cada iteración le paso una tupla (aDevolver, ys) podría hacerlo?
+
+
+-- Voy a asumir que xs e ys tienen la misma longitud
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use bimap" #-}
+sumaVector :: [Int] -> [Int] -> [Int]
+sumaVector xs ys = snd $ foldr (\x (listaYs, res) -> (init listaYs, last listaYs + x : res)) ( ys, []) xs
+
+sumaMat :: [[Int]] -> [[Int]] -> [[Int]]
+sumaMat xs ys = snd $ foldr (\x (listaYs, res) -> (init listaYs, 
+                                        if res == [[]]
+                                        then [sumaVector x (head listaYs)]
+                                        else sumaVector x (head listaYs) : res)) (ys, [[]]) xs
