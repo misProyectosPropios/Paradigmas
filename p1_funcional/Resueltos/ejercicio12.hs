@@ -65,12 +65,15 @@ esABB (Bin izq valor der) =  (case izq of
                                 Bin _ vDer _ -> valor > vDer) && esABB izq && esABB der
 -}
 
-esABB :: Ord a => AB a -> Bool 
-esABB = recAB (\) (Bin derIzq vIzq izqIzq) (Bin derDer vDer izqDer) izq val der -> 
-    if vIzq /= Nil then vIzq > val else True &&
-    if vDer /= Nil then vDer > val else True &&
-    izq && der) True
+{-
 
+Tiene error pero debería ser algo así
+esABB :: Ord a => AB a -> Bool
+esABB = recAB (\ (Bin derIzq vIzq izqIzq) (Bin derDer vDer izqDer) izq val der ->
+    if vIzq /= Nil then vIzq > val else if vDer /= Nil then vDer > val else True &&
+    izq && der) True
+    
+-}
 -- Para el último debía saber los valores de los próximos para poder calcular el valor de verdad de la expresión
 -- Si no concocía los siguientes 2 valores, no podía asegurar nada
 
