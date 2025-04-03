@@ -20,7 +20,7 @@ v. Justificar la elección de los esquemas de recursión utilizados para los tre
 import GHC.Base (TrName(TrNameD))
 {-# HLINT ignore "Eta reduce" #-}
 
-data AB a = Nil | Bin (AB a) a (AB a)
+data AB a = Nil | Bin (AB a) a (AB a) deriving Show
 -- foldr :: (a -> b -> b) -> b -> [a] -> b 
 foldAB :: (b -> a -> b -> b) -> b -> AB a -> b
 foldAB f base Nil = base
@@ -77,5 +77,11 @@ esABB = recAB (\ (Bin derIzq vIzq izqIzq) (Bin derDer vDer izqDer) izq val der -
 -- Para el último debía saber los valores de los próximos para poder calcular el valor de verdad de la expresión
 -- Si no concocía los siguientes 2 valores, no podía asegurar nada
 
+{-
+mapAB :: (a -> b) -> AB a -> AB b
+mapAB f Nil = Nil
+mapAB f (Bin izq valor der) = Bin (mapAB f izq) (f valor) (mapAB f der)
+-}
 
-
+mapAB :: (a -> b) -> AB a -> AB b
+mapAB f arbol = foldAB (\izq valor der -> Bin izq (f valor) der) Nil arbol
